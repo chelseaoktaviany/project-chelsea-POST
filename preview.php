@@ -91,16 +91,27 @@
                       </thead>
                       <tbody>
                         <?php
-                          $post_trashed = mysqli_query($conn, "SELECT Id, Title, Category, Status FROM posts WHERE Status = 'Published'");
-                          $no = 1;
-                          while($row = mysqli_fetch_array($post_trashed)) {
+                          $batas = 10;
+                          $halaman = isset($_GET['halaman'])?(int)$_GET['halaman'] : 1;
+                          $halaman_awal = ($halaman>1) ? ($halaman * $batas) - $batas : 0;
+
+                          $previous = $halaman - 1;
+                          $next = $halaman + 1;
+
+                          $data = mysqli_query($conn, "SELECT Id, Title, Category, Status FROM posts WHERE Status = 'Published'");
+                          $jumlah_data = mysqli_num_rows($data);
+                          $total_halaman = ceil($jumlah_data / $batas);
+
+                          $post_published = mysqli_query($conn, "SELECT Id, Title, Category, Status FROM posts WHERE Status = 'Published' LIMIT $halaman_awal, $batas");
+                          $no = $halaman_awal + 1;
+                          while($d = mysqli_fetch_array($post_published)) {
                         ?>
                             <tr>
                               <td><?php echo $no++?></td>
-                              <td><?php echo $row['Id']?></td>
-                              <td><?php echo $row['Title']?></td>
-                              <td><?php echo $row['Category']?></td>
-                              <td><?php echo $row['Status']?></td>
+                              <td><?php echo $d['Id']?></td>
+                              <td><?php echo $d['Title']?></td>
+                              <td><?php echo $d['Category']?></td>
+                              <td><?php echo $d['Status']?></td>
                             </tr>
                         <?php
                           }
@@ -109,11 +120,26 @@
                     </table>
                     <nav aria-label="Page navigation example">
                       <ul class="pagination justify-content-md-center mt-lg-5">
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                        
+                        <!--previous-->
+                        <li class="page-item">
+                          <a class="page-link" <?php if($halaman > 1) { echo "href='?halaman=$previous'"; }?> aria-label="Previous"><span aria-hidden="true">«</span></a>
+                        </li>
+                        
+                        <!--num page-->
+                        <?php
+                        for($x=1;$x<=$total_halaman;$x++){
+                          ?> 
+                          <li class="page-item active"><a class="page-link" href="?halaman=<?php echo $x ?>"><?php echo $x; ?></a></li>
+                          <?php
+                        }
+                        ?>	
+
+                        <!--next-->
+                        <li class="page-item">
+                          <a class="page-link" <?php if($halaman < $total_halaman) { echo "href='?halaman=$next'"; }?> aria-label="Next"><span aria-hidden="true">»</span></a>
+                        </li>
+
                       </ul>
                     </nav>
                   </div>
