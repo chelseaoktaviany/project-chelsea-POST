@@ -22,7 +22,7 @@
   <body>
 
     <!--sidebar-->
-    <?php echo file_get_contents('sidebar.php'); ?>
+    <?php include('layout/sidebar.php'); ?>
     <!--end of sidebar-->
 
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
@@ -69,30 +69,32 @@
                                 <div class="row justify-content-md-center">
                                     <div class="col-sm-10">
                                         <!--form add new-->
-                                        <form class="row g-3 mt-2" action="#" method="POST">
+                                        <form class="row g-3 mt-2" name="formAddPost" action="functions/publish-post.php" method="POST">
                                             <div class="row justify-content-md-center">
                                                 <div class="col-md-4 mb-3">
                                                     <label class="form-label" for="titlePost">Title</label>
-                                                    <input class="form-control" id="title" name="titlePost" type="text" placeholder="Your title here" required/>
+                                                    <input class="form-control" id="title" name="addTitle" type="text" placeholder="Your title here" required/>
                                                 </div>
                                                 <div class="col-md-4 mb-3">
-                                                    <label class="form-label" for="category">Category</label>
-                                                    <input class="form-control" id="category" name="categoryPost" type="text" placeholder="Category goes here" required/>
+                                                    <label class="form-label" for="categoryPost">Category</label>
+                                                    <input class="form-control" id="category" name="addCategory" type="text" placeholder="Category goes here" required/>
                                                 </div>
                                             </div>
                                             <div class="row justify-content-md-center">
                                                 <div class="col-lg-8 mb-3">
                                                     <label class="form-label" for="contentPost">Content</label>
-                                                    <textarea style="resize: none; height: 200px;" class="form-control" id="content" name="contentPost" type="text" placeholder="Content goes here.." required></textarea>
+                                                    <textarea style="resize: none; height: 200px;" class="form-control" id="content" name="addContent" placeholder="Content goes here.." required></textarea>
                                                 </div>
                                             </div>
                                             <div class="row justify-content-md-center text-center">
                                                 <div class="col col-lg-12">
-                                                    <a href="#" class="btn btn-primary">Publish</a>
-                                                    <a href="#" class="btn btn-secondary">Draft</a>
+                                                    <button type="submit" class="btn btn-primary">Publish</button>
+                                                    <button type="submit" onclick="formAddPost.action='functions/draft-post.php'" class="btn btn-secondary">Draft</button>
                                                 </div>
                                             </div>
                                         </form>
+                                        <!--form publish-->
+
                                         <!--end of add form-->
 
                                     </div>
@@ -111,7 +113,7 @@
         </div>
 
         <!--footer-->
-        <?php file_get_contents('footer.php');?>
+        <?php include('layout/footer.php');?>
         <!--end of footer-->
 
     </div>

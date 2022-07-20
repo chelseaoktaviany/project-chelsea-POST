@@ -1,3 +1,16 @@
+<?php
+include ('koneksi.php');
+
+$id = $_GET['id'];
+
+$query = "SELECT Id, Title, Content, Category  FROM posts WHERE Id = $id";
+
+$result = mysqli_query($conn, $query);
+
+$row = mysqli_fetch_array($result);
+
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -17,12 +30,12 @@
     <!--icons-->
     <link rel="stylesheet" href="https://unpkg.com/@coreui/icons/css/all.min.css">
 
-    <title>Dashboard - Edit Article</title>
+    <title>Dashboard - Edit Post</title>
   </head>
   <body>
 
     <!--sidebar-->
-    <?php echo file_get_contents('sidebar.php'); ?>
+    <?php include('layout/sidebar.php'); ?>
     <!--end of sidebar-->
 
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
@@ -48,7 +61,7 @@
                     <!-- if breadcrumb is single--><span>Home</span>
                     </li>
                     <li class="breadcrumb-item">Posts</li>
-                    <li class="breadcrumb-item active"><span>Add New</span></li>
+                    <li class="breadcrumb-item active"><span>Edit Post</span></li>
                 </ol>
                 </nav>
             </div>
@@ -61,7 +74,7 @@
                         <div class="card mb-4">
                             <!--card header-->
                             <div class="card-header align-items-center">
-                                <h5>Edit Article</h5>
+                                <h5>Edit Post</h5>
                             </div>
 
                             <!--card body -->
@@ -69,27 +82,31 @@
                                 <div class="row justify-content-md-center">
                                     <div class="col-sm-10">
                                         <!--form add new-->
-                                        <form class="row g-3 mt-2" action="#" method="POST">
+                                        <form class="row g-3 mt-2" name="formUpdatePost" action="functions/update-post.php" method="POST">
                                             <div class="row justify-content-md-center">
+                                                <!-- <div class="col-md-4 mb-3"> -->
+                                                    <!-- <label class="form-label" for="idPost">ID</label> -->
+                                                    <input class="form-control" id="idPost" name="idPostEdit" type="text" value="<?php echo $row['Id']?>" hidden/>
+                                                <!-- </div> -->
                                                 <div class="col-md-4 mb-3">
                                                     <label class="form-label" for="titlePost">Title</label>
-                                                    <input class="form-control" id="title" name="titlePost" type="text" placeholder="Your title here" required/>
+                                                    <input class="form-control" id="title" name="titlePostEdit" type="text" value="<?php echo $row['Title']?>" required/>
                                                 </div>
                                                 <div class="col-md-4 mb-3">
                                                     <label class="form-label" for="category">Category</label>
-                                                    <input class="form-control" id="category" name="categoryPost" type="text" placeholder="Category goes here" required/>
+                                                    <input class="form-control" id="category" name="categoryPostEdit" type="text" value="<?php echo $row['Category']?>" required/>
                                                 </div>
                                             </div>
                                             <div class="row justify-content-md-center">
                                                 <div class="col-lg-8 mb-3">
                                                     <label class="form-label" for="contentPost">Content</label>
-                                                    <textarea style="resize: none; height: 200px;" class="form-control" id="content" name="contentPost" type="text" placeholder="Content goes here.." required></textarea>
+                                                    <textarea style="resize: none;" class="form-control" id="content" name="contentPostEdit" rows="7" required><?php echo $row['Content']?></textarea>
                                                 </div>
                                             </div>
                                             <div class="row justify-content-md-center text-center">
                                                 <div class="col col-lg-12">
-                                                    <a href="#" class="btn btn-primary">Publish</a>
-                                                    <a href="#" class="btn btn-secondary">Draft</a>
+                                                    <button type="submit" class="btn btn-primary">Publish</button>
+                                                    <button type="submit" onclick="formUpdatePost.action='functions/draft-update-post.php'" class="btn btn-secondary">Draft</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -111,7 +128,7 @@
         </div>
 
         <!--footer-->
-        <?php file_get_contents('footer.php');?>
+        <?php include('layout/footer.php');?>
         <!--end of footer-->
 
     </div>

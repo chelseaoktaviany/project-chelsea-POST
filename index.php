@@ -21,7 +21,7 @@
   </head>
   <body>
   <!--sidebar-->
-  <?php echo file_get_contents('sidebar.php'); ?>
+  <?php include('layout/sidebar.php'); ?>
   <!--end of sidebar-->
 
   <div class="wrapper d-flex flex-column min-vh-100 bg-light">
@@ -80,7 +80,7 @@
     </div>
 
     <!--footer-->
-    <?php echo file_get_contents('footer.php');?>
+    <?php include('layout/footer.php');?>
     <!--end of footer-->
 
   </div>

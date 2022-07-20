@@ -1,3 +1,7 @@
+<?php
+  include ('koneksi.php');
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,7 +28,7 @@
   </head>
   <body>
   <!--sidebar-->
-  <?php echo file_get_contents('sidebar.php');?>
+  <?php include('layout/sidebar.php');?>
   <!--end of sidebar-->
 
   <div class="wrapper d-flex flex-column min-vh-100 bg-light">
@@ -71,103 +75,50 @@
               <div class="card-header"><h5>Preview Posts</h5></div>
               <div class="card-body">
               <div class="example">
-                <ul class="nav nav-tabs" role="tablist">
-                  <li class="nav-item"><a class="nav-link active" data-coreui-toggle="tab" href="#published" role="tab">
-                      <svg class="icon me-2">
-                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-notes"></use>
-                      </svg>Published</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" data-coreui-toggle="tab" href="#draft" role="tab">
-                      <svg class="icon me-2">
-                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-paperclip"></use>
-                      </svg>Draft</a>
-                  </li>
-                  <li class="nav-item"><a class="nav-link" data-coreui-toggle="tab" href="#trashed" role="tab">
-                      <svg class="icon me-2">
-                        <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-trash"></use>
-                      </svg>Trashed</a>
-                  </li>
-                </ul>
 
-                <!--published-->
+                <!--all preview posts-->
                 <div class="tab-content rounded-bottom">
-                  <div class="tab-pane p-3 active" role="tabpanel" id="published">
+                  <div class="tab-pane p-3 active" role="tabpanel">
                     <table class="table">
                       <thead>
                         <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">ID</th>
                           <th scope="col">Title</th>
                           <th scope="col">Category</th>
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Your title here1</td>
-                          <td>Blog1</td>
-                          <td>
-                            Published
-                          </td>
-                        </tr>
+                        <?php
+                          $post_trashed = mysqli_query($conn, "SELECT Id, Title, Category, Status FROM posts WHERE Status = 'Published'");
+                          $no = 1;
+                          while($row = mysqli_fetch_array($post_trashed)) {
+                        ?>
+                            <tr>
+                              <td><?php echo $no++?></td>
+                              <td><?php echo $row['Id']?></td>
+                              <td><?php echo $row['Title']?></td>
+                              <td><?php echo $row['Category']?></td>
+                              <td><?php echo $row['Status']?></td>
+                            </tr>
+                        <?php
+                          }
+                        ?>
                       </tbody>
                     </table>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-md-center mt-lg-5">
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+                      </ul>
+                    </nav>
                   </div>
                 </div>
-                <!--end of published-->
-
-                <!--draft-->
-                <div class="tab-content rounded-bottom">
-                  <div class="tab-pane p-3" role="tabpanel" id="draft">
-
-                    <!--table-->
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                          <tr>
-                            <td>League of Legends</td>
-                            <td>Moba</td>
-                            <td>
-                            Draft
-                            </td>
-                          </tr>
-                      </tbody>
-                    </table>
-                    <!--end of table-->
-
-                  </div>
-                </div>
-                <!--end of draft-->
-
-                <!--trashed-->
-                <div class="tab-content rounded-bottom">
-                  <div class="tab-pane p-3" role="tabpanel" id="trashed">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Title</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>Your title here3</td>
-                          <td>Blog3</td>
-                          <td>
-                            Trashed
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                <!--end of trashed-->
-
+                <!--end of preview posts-->
 
               </div>
               <!--end of example-->
@@ -189,7 +140,7 @@
     <!--end of body-->
 
     <!--footer-->
-    <?php echo file_get_contents('footer.php');?>
+    <?php include('layout/footer.php');?>
     <!--end of footer-->
 
   </div>

@@ -1,3 +1,7 @@
+<?php
+  include 'koneksi.php';
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,7 +28,7 @@
   </head>
   <body>
   <!--sidebar-->
-  <?php echo file_get_contents('sidebar.php');?>
+  <?php include('layout/sidebar.php');?>
   <!--end of sidebar-->
 
   <div class="wrapper d-flex flex-column min-vh-100 bg-light">
@@ -95,25 +99,38 @@
                     <table class="table">
                       <thead>
                         <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">ID</th>
                           <th scope="col">Title</th>
                           <th scope="col">Category</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Your title here1</td>
-                          <td>Blog1</td>
-                          <td>
-                          <a style="text-decoration: none; font-size: 19px;" href="#">
-                            <i class="cil-pen"></i>
-                          </a>
-                          &nbsp;&nbsp;
-                          <a style="text-decoration: none; font-size: 19px;" href="#">
-                            <i class="cil-trash"></i>
-                          </a>
-                          </td>
-                        </tr>
+                        <!-- <tr> -->
+                          <?php
+                            $post_published = mysqli_query($conn, "SELECT Id, Title, Content, Category FROM posts WHERE Status = 'Published'");
+                            $no = 1;
+                            while($row = mysqli_fetch_array($post_published)) {
+                          ?>
+                            <tr>
+                              <td><?php echo $no++?></td>
+                              <td><?php echo $row['Id']?></td>
+                              <td><?php echo $row['Title']?></td>
+                              <td><?php echo $row['Category']?></td>
+                              <td>
+                                <a style="text-decoration: none; font-size: 19px;" href="editpost.php?id=<?php echo $row['Id']?>">
+                                  <i class='cil-pen'></i>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a style="text-decoration: none; font-size: 19px;" href="functions/trashpost.php?id=<?php echo $row['Id']?>">
+                                  <i class='cil-trash'></i>
+                                </a>
+                              </td>
+                            </tr>
+                            <?php
+                            }
+                            ?>
                       </tbody>
                     </table>
                   </div>
@@ -128,25 +145,37 @@
                     <table class="table">
                       <thead>
                         <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">Id</th>
                           <th scope="col">Title</th>
                           <th scope="col">Category</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                          <tr>
-                            <td>League of Legends</td>
-                            <td>Moba</td>
-                            <td>
-                            <a style="text-decoration: none; font-size: 19px;" href="#">
-                              <i class="cil-pen"></i>
+                        <?php
+                          $post_draft = mysqli_query($conn, "SELECT Id, Title, Category FROM posts WHERE Status = 'Draft'");
+                          $no = 1;
+                          while($row = mysqli_fetch_array($post_draft)) {
+                        ?>
+                        <tr>
+                          <td><?php echo $no++?></td>
+                          <td><?php echo $row['Id']?></td>
+                          <td><?php echo $row['Title']?></td>
+                          <td><?php echo $row['Category']?></td>
+                          <td>
+                            <a style="text-decoration: none; font-size: 19px;" href="editpost.php?id=<?php echo $row['Id']?>">
+                              <i class='cil-pen'></i>
                             </a>
                             &nbsp;&nbsp;
-                            <a style="text-decoration: none; font-size: 19px;" href="#">
-                              <i class="cil-trash"></i>
+                            <a style="text-decoration: none; font-size: 19px;" href="functions/trashpost.php?id=<?php echo $row['Id']?>">
+                              <i class='cil-trash'></i>
                             </a>
-                            </td>
-                          </tr>
+                          </td>
+                        </tr>
+                        <?php
+                        }
+                        ?>
                       </tbody>
                     </table>
                     <!--end of table-->
@@ -161,25 +190,37 @@
                     <table class="table">
                       <thead>
                         <tr>
+                          <th scope="col">No</th>
+                          <th scope="col">Id</th>
                           <th scope="col">Title</th>
                           <th scope="col">Category</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Your title here3</td>
-                          <td>Blog3</td>
-                          <td>
-                          <a style="text-decoration: none; font-size: 19px;" href="#">
-                            <i class="cil-pen"></i>
-                          </a>
-                          &nbsp;&nbsp;
-                          <a style="text-decoration: none; font-size: 19px;" href="#">
-                            <i class="cil-trash"></i>
-                          </a>
-                          </td>
-                        </tr>
+                        <?php
+                          $post_trashed = mysqli_query($conn, "SELECT Id, Title, Category FROM posts WHERE Status = 'Trashed'");
+                          $no = 1;
+                          while($row = mysqli_fetch_array($post_trashed)) {
+                        ?>
+                            <tr>
+                              <td><?php echo $no++?></td>
+                              <td><?php echo $row['Id']?></td>
+                              <td><?php echo $row['Title']?></td>
+                              <td><?php echo $row['Category']?></td>
+                              <td>
+                                <a style="text-decoration: none; font-size: 19px;" href="editpost.php?id=<?php echo $row['Id']?>">
+                                  <i class='cil-pen'></i>
+                                </a>
+                                &nbsp;&nbsp;
+                                <a style="text-decoration: none; font-size: 19px;" href="functions/delete-post.php?id=<?php echo $row['Id']?>">
+                                  <i class='cil-trash'></i>
+                                </a>
+                              </td>
+                            </tr>
+                        <?php
+                        }
+                        ?>
                       </tbody>
                     </table>
                   </div>
@@ -207,7 +248,7 @@
     <!--end of body-->
 
     <!--footer-->
-    <?php echo file_get_contents('footer.php');?>
+    <?php include('layout/footer.php');?>
     <!--end of footer-->
 
   </div>
