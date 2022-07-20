@@ -17,7 +17,7 @@
     <!--icons-->
     <link rel="stylesheet" href="https://unpkg.com/@coreui/icons/css/all.min.css">
 
-    <title>Dashboard</title>
+    <title>POST</title>
   </head>
   <body>
   <!--sidebar-->
